@@ -9,7 +9,17 @@ CREATE TABLE Clientes (
     ID INT PRIMARY KEY,               -- Chave primária da tabela Clientes
     nomeCliente VARCHAR(100),         -- Nome do cliente
     emailCliente VARCHAR(100)         -- E-mail do cliente
-    -- Inserção de dados na tabela 'Clientes'
+);
+
+-- Criação da tabela 'Compras'
+CREATE TABLE Compras (
+    CompraID INT PRIMARY KEY,         -- Chave primária da tabela Compras
+    ClienteID INT,                    -- Chave estrangeira referenciando o ID da tabela Clientes
+    NomeLivro VARCHAR(100),           -- Nome do livro comprado
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ID)  -- Definição da chave estrangeira
+);
+
+-- Inserção de dados na tabela 'Clientes'
 INSERT INTO Clientes (ID, nomeCliente, emailCliente)
 VALUES
     (1, 'João Silva', 'joao.silva@email.com'),
@@ -26,12 +36,14 @@ VALUES
     (4, 3, '1984'),
     (5, 4, 'A Moreninha'),
     (6, 2, 'O Primo Basílio');
-);
 
--- Criação da tabela 'Compras'
-CREATE TABLE Compras (
-    CompraID INT PRIMARY KEY,         -- Chave primária da tabela Compras
-    ClienteID INT,                    -- Chave estrangeira referenciando o ID da tabela Clientes
-    NomeLivro VARCHAR(100),           -- Nome do livro comprado
-    FOREIGN KEY (ClienteID) REFERENCES Clientes(ID)  -- Definição da chave estrangeira
-);
+-- Consulta SQL com INNER JOIN para retornar nome do cliente e nome do livro para todas as compras
+SELECT 
+    Clientes.nomeCliente,   -- Nome do cliente
+    Compras.NomeLivro      -- Nome do livro comprado
+FROM 
+    Compras                 -- Tabela de compras
+INNER JOIN 
+    Clientes                -- Tabela de clientes
+ON 
+    Compras.ClienteID = Clientes.ID;  -- Condição de junção, onde ClienteID da tabela Compras corresponde ao ID da tabela Clientes;
